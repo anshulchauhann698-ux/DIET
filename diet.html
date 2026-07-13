@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Glow Up Tracker</title>
+    <!-- Apple Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-orange { box-shadow: 0 0 25px -5px rgba(249, 115, 22, 0.4); }
+        .glow-blue { box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.4); }
+        .circle-progress { transition: stroke-dashoffset 0.3s ease-in-out; }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen pb-12 antialiased selection:bg-indigo-500/30">
+
+    <!-- Simple Top Navigation Header -->
+    <header class="sticky top-0 z-50 px-6 pt-14 pb-4 bg-[#0f172a]/70 backdrop-blur-md border-b border-slate-800/40 flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-black tracking-tight bg-gradient-to-r from-orange-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">MY GLOW UP</h1>
+            <p class="text-[10px] font-bold tracking-widest text-emerald-400 uppercase mt-0.5 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Pure Vegetarian Mode
+            </p>
+        </div>
+        <button onclick="resetDayForce()" class="p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/50 hover:bg-red-500/20 active:scale-95 transition">
+            🗑️
+        </button>
+    </header>
+
+    <!-- MAIN TRACKER DASHBOARD -->
+    <main class="max-w-md mx-auto p-5 space-y-6">
+        
+        <!-- Progress Rings Card Display -->
+        <div class="grid grid-cols-2 gap-4">
+            <!-- Protein Card -->
+            <div class="glass-card p-5 rounded-3xl flex flex-col items-center text-center relative overflow-hidden">
+                <div class="w-24 h-24 relative mb-4 flex items-center justify-center">
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.03)" stroke-width="7" fill="transparent"/>
+                        <circle id="proteinRing" class="circle-progress stroke-orange-500" cx="50" cy="50" r="40" stroke-width="7" fill="transparent" 
+                                stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round"/>
+                    </svg>
+                    <div class="absolute flex flex-col items-center">
+                        <span class="text-xl font-black text-white" id="proteinPct">0%</span>
+                        <span class="text-[9px] uppercase tracking-wider text-orange-400 font-bold">Protein</span>
+                    </div>
+                </div>
+                <p class="text-xs font-medium text-slate-400"><span id="currProtein" class="text-lg font-black text-white tracking-tight">0</span> / 150g</p>
+            </div>
+
+            <!-- Water Card -->
+            <div class="glass-card p-5 rounded-3xl flex flex-col items-center text-center relative overflow-hidden">
+                <div class="w-24 h-24 relative mb-4 flex items-center justify-center">
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.03)" stroke-width="7" fill="transparent"/>
+                        <circle id="waterRing" class="circle-progress stroke-blue-500" cx="50" cy="50" r="40" stroke-width="7" fill="transparent" 
+                                stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round"/>
+                    </svg>
+                    <div class="absolute flex flex-col items-center">
+                        <span class="text-xl font-black text-white" id="waterPct">0%</span>
+                        <span class="text-[9px] uppercase tracking-wider text-blue-400 font-bold">Water</span>
+                    </div>
+                </div>
+                <p class="text-xs font-medium text-slate-400"><span id="currWater" class="text-lg font-black text-white tracking-tight">0</span> / 4000ml</p>
+            </div>
+        </div>
+
+        <!-- Log Quick Actions Section -->
+        <div class="space-y-3">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Log Intake</h3>
+            <div class="space-y-2.5">
+                <!-- Water Counter -->
+                <div class="glass-card p-3 rounded-2xl flex items-center gap-2">
+                    <div class="bg-blue-500/20 text-blue-400 p-2.5 rounded-xl font-bold text-sm">💧</div>
+                    <div class="grid grid-cols-3 gap-2 flex-1">
+                        <button onclick="addWater(250)" class="bg-blue-600/20 font-bold text-xs py-2 rounded-xl border border-blue-500/20 active:scale-95 transition">+250ml</button>
+                        <button onclick="addWater(500)" class="bg-blue-600/20 font-bold text-xs py-2 rounded-xl border border-blue-500/20 active:scale-95 transition">+500ml</button>
+                        <button onclick="addWater(1000)" class="bg-blue-600/30 text-blue-200 font-bold text-xs py-2 rounded-xl border border-blue-500/40 glow-blue active:scale-95 transition">⚡ +1L</button>
+                    </div>
+                </div>
+                <!-- Protein Counter -->
+                <div class="glass-card p-3 rounded-2xl flex items-center gap-2">
+                    <div class="bg-orange-500/20 text-orange-400 p-2.5 rounded-xl font-bold text-sm">💪</div>
+                    <div class="grid grid-cols-3 gap-2 flex-1">
+                        <button onclick="addProtein(10)" class="bg-orange-600/20 font-bold text-xs py-2 rounded-xl border border-orange-500/20 active:scale-95 transition">+10g</button>
+                        <button onclick="addProtein(25)" class="bg-orange-600/20 font-bold text-xs py-2 rounded-xl border border-orange-500/20 active:scale-95 transition">+25g</button>
+                        <button onclick="addProtein(40)" class="bg-orange-600/30 text-orange-200 font-bold text-xs py-2 rounded-xl border border-orange-500/40 glow-orange active:scale-95 transition">⚡ +40g</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const proteinGoal = 150;
+        const waterGoal = 4000;
+        const radius = 40;
+        const circumference = 2 * Math.PI * radius;
+
+        let currentDayData = {
+            protein: 0,
+            water: 0
+        };
+
+        // Automatically resets values to zero when the calendar day changes
+        function checkDayTransition() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            const storedDate = localStorage.getItem('activeDateStr');
+
+            if (storedDate && storedDate !== todayStr) {
+                // Clear out yesterday's storage targets completely
+                localStorage.setItem('protein', 0);
+                localStorage.setItem('water', 0);
+            }
+            localStorage.setItem('activeDateStr', todayStr);
+            
+            currentDayData.protein = parseFloat(localStorage.getItem('protein')) || 0;
+            currentDayData.water = parseFloat(localStorage.getItem('water')) || 0;
+        }
+
+        function setProgress(elementId, current, goal) {
+            const circle = document.getElementById(elementId);
+            const rawPercentage = (current / goal) * 100;
+            const offset = circumference - (Math.min(rawPercentage, 100) / 100) * circumference;
+            circle.style.strokeDashoffset = offset;
+        }
+
+        function updateUI() {
+            document.getElementById('currProtein').innerText = currentDayData.protein;
+            document.getElementById('currWater').innerText = currentDayData.water;
+
+            const proteinPercentage = Math.round((currentDayData.protein / proteinGoal) * 100);
+            const waterPercentage = Math.round((currentDayData.water / waterGoal) * 100);
+
+            document.getElementById('proteinPct').innerText = proteinPercentage + '%';
+            document.getElementById('waterPct').innerText = waterPercentage + '%';
+
+            setProgress('proteinRing', currentDayData.protein, proteinGoal);
+            setProgress('waterRing', currentDayData.water, waterGoal);
+        }
+
+        function addProtein(amount) {
+            currentDayData.protein += amount;
+            localStorage.setItem('protein', currentDayData.protein);
+            updateUI();
+        }
+
+        function addWater(amount) {
+            currentDayData.water += amount;
+            localStorage.setItem('water', currentDayData.water);
+            updateUI();
+        }
+
+        function resetDayForce() {
+            if (confirm('Reset today\'s stats to zero?')) {
+                currentDayData.protein = 0;
+                currentDayData.water = 0;
+                localStorage.setItem('protein', 0);
+                localStorage.setItem('water', 0);
+                updateUI();
+            }
+        }
+
+        // Run checking loop on boot initialization
+        checkDayTransition();
+        updateUI();
+    </script>
+</body>
+</html>
